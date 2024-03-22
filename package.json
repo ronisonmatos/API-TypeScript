@@ -1,0 +1,40 @@
+{
+    "name": "reference.api",
+    "version": "1.0.0",
+    "description": "Reference",
+    "main": "index.js",
+    "scripts": {
+        "dev": "ts-node src/app.ts",
+        "test": "test"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/cors": "^2.8.17",
+        "@types/jest": "^29.5.12",
+        "@types/node": "^20.11.24",
+        "@types/supertest": "^6.0.2",
+        "cross-env": "^7.0.3",
+        "jest": "^29.7.0",
+        "mocha": "^10.3.0",
+        "supertest": "^6.3.4",
+        "ts-jest": "^29.1.2",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3"
+    },
+    "dependencies": {
+        "@types/express": "^4.17.21",
+        "cors": "^2.8.5",
+        "date-fns": "^3.5.0",
+        "dotenv": "^16.4.5",
+        "express": "^4.18.3",
+        "pg": "^8.11.3",
+        "postgres": "^3.4.3",
+        "reflect-metadata": "^0.2.1",
+        "test": "^3.3.0",
+        "tsconfig-paths": "^4.2.0",
+        "typeorm": "^0.3.20",
+        "typeorm-extension": "^3.5.0",
+        "winston": "^3.12.0"
+    }
+}
