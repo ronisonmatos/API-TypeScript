@@ -1,13 +1,3 @@
-# reference.api
-
-Estrutura de controle de banco de dados postgresql e estrutura em typeORM com: 
-
-Uma tabela contendo todas as cidades do Brasil;
-
-### Execução em ambiente de desenvolvimento
-
-Consulte **[Implantação](#-implanta%C3%A7%C3%A3o)** para saber como implantar o projeto.
-
 ### 📋 Pré-requisitos
 
 De que coisas você precisa para instalar o software e como instalá-lo?
