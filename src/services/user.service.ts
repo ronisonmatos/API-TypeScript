@@ -27,12 +27,16 @@ class UserService {
         return await this.repository.save(updatedUser);
     }
 
-    async  removeUserById(id: string){
+    async  desableUserById(id: string){
         const user = await this.repository.findOneBy( {id});
         if(!user){
             logger.info("Usuário não encontrado");
             throw new Error("Usuário não encontrado");
         }
+
+        user.deletedAt = new Date();
+        logger.info(`Usuário (${user.email}) removido com sucesso!`);
+        return await this.repository.save(user);
     }
 }
 

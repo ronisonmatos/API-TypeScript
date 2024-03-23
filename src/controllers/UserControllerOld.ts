@@ -1,8 +1,5 @@
-import { NextFunction, Request, Response } from "express";
-import { myDataSource } from "../configs/app-data-source";
-import { User } from "../entity/user.entity";
+import { Request, Response } from "express";
 import MyResponse from "../functions/MyResponse";
-import { IsNull } from "typeorm";
 import logger from "../../src/configs/logger";
 import UserService from "../services/user.service";
 
@@ -67,27 +64,15 @@ const updateUserById = async (request: Request, response: Response) => {
     }
 }
 
-const removeUserById = async (request: Request, response: Response) => {
+const desableUserById = async (request: Request, response: Response) => {
     try {
-        const { id } = request.params;
-        const repository = myDataSource.getRepository(User);
-        const user = await repository.findOneBy({ id });
-
-        if (!user) {
-            logger.info(`Usuário ID: ${id} não encontrado.`)
-            return MyResponse.sendNotFound(response);
-        }
-
-        if (user.deletedAt) {
-            logger.error(`Usuário ${user.email} já removido em ${user.deletedAt}`)
+        const { id, deletedAt, email } = request.params;
+        const removedUser = await userService.desableUserById(id);
+        if (deletedAt) {
+            logger.error(`Usuário ${email} já removido em ${deletedAt}`)
             return MyResponse.sendSuccess(response, { id, message: 'Usuário já removido.' });
         }
-
-        user.deletedAt = new Date();
-        await repository.save(user);
-        logger.info(`Usuário (${user.email}) removido com sucesso!`);
-
-        return MyResponse.sendSuccess(response, { id });
+        return MyResponse.sendSuccess(response, removedUser);
     } catch (error) {
         logger.error(error);
         return MyResponse.sendInternalError(response, error);
@@ -97,7 +82,7 @@ const removeUserById = async (request: Request, response: Response) => {
 const UserController = {
     insertUser,
     updateUserById,
-    removeUserById,
+    desableUserById,
     getAllUsers,
     getUserById,
 }

@@ -1,5 +1,5 @@
 import express = require("express");
-import CityController from "../api/CityController";
+import CityController from "../controllers/CityController";
 
 const router = express.Router();
 

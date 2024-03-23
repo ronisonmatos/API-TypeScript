@@ -1,5 +1,5 @@
 import express = require("express");
-import DeviceController from "../api/DeviceController";
+import DeviceController from "../controllers/DeviceController";
 
 const router = express.Router();
 
