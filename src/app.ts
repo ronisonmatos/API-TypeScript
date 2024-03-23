@@ -4,22 +4,28 @@ import { myDataSource } from "./configs/app-data-source"
 import routes from "./routes"
 import * as cors from "cors"
 import * as dotenv from "dotenv"
+import { Request, Response } from "express";
+import {errorHandler} from "./middlewares/error.middleware";
+import {userRouter} from "./routes/UserRoutes";
+import deviceRoutes from "./routes/DeviceRoutes";
+import logger from "./configs/logger";
 
-const startup = async () => {
+const app = express();
+app.use(express.json());
+app.use(errorHandler);
+const {PORT} = process.env;
+app.use("/auth", userRouter);
+app.use("/api", routes);
 
-    dotenv.config()
+app.get("*",(req: Request, res: Response) => {
+    res.status(505).json({message: "Bad Request"});
+});
 
-    const port = process.env.PORT || 3000
-
-    await myDataSource.initialize();
-
-    const app = express()
-    app.use(express.json())
-    app.use(cors());
-    app.use("/api", routes);
-
-    app.listen(port, () => console.log(`Application is up and running in port: ${port}`));
-
-}
-
-startup();
+myDataSource.initialize()
+    .then(
+        async () => {
+            app.listen(PORT, () => {
+            logger.info(`===== Server is running on http://localhost:${PORT} =====`);
+        });
+            logger.info("Data Source has been initialized!");
+    }).catch((error) => logger.error(error));
