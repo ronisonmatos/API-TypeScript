@@ -1,5 +1,13 @@
 import winston = require("winston");
 
+const transports: winston.transport[] = [
+    new winston.transports.Console()
+];
+
+if (process.env.ENABLE_FILE_LOGGING === 'true') {
+    transports.push(new winston.transports.File({ filename: 'app.log' }));
+}
+
 const logger = winston.createLogger({
     level: 'info',
     format: winston.format.combine(
@@ -8,10 +16,7 @@ const logger = winston.createLogger({
             return `[${timestamp}] ${level.toUpperCase()}: ${message}`;
         })
     ),
-    transports: [
-        new winston.transports.Console(),
-        new winston.transports.File({filename: 'app.log'})
-    ]
+    transports: transports
 });
 
 export default logger;

@@ -13,6 +13,7 @@ interface IResponse {
   page?: number;
   size?: number;
   count?: number;
+  token?: any
 }
 
 export default {
@@ -23,12 +24,14 @@ export default {
     data?: any,
     statusCode?: number,
     pagination?: IResponsePagination,
+    token?: any
   ) {
     response.statusCode = statusCode || 200;
 
-    var result: IResponse = {
+    let result: IResponse = {
       code,
       status,
+      token,
     };
 
     if (data !== undefined && data !== null) {
@@ -43,31 +46,31 @@ export default {
     response.end();
   },
 
-  sendSuccess(response: Response, data: any, pagination?: IResponsePagination) {
-    this.sendResponse(response, 200, "ok", data, 200, pagination);
+  sendSuccess(response: Response, data: any, statusMessage = "ok", token?: any, pagination?: IResponsePagination) {
+    this.sendResponse(response, 200, statusMessage, data, 200, pagination, token);
   },
 
-  sendInvalidSyntax(response: Response, data?: any) {
-    this.sendResponse(response, 400, "invalid syntax", data, 400);
+  sendInvalidSyntax(response: Response, data?: any, statusMessage = "invalid syntax") {
+    this.sendResponse(response, 400, statusMessage, data, 400);
   },
 
-  sendUnauthorized(response: Response, data?: any) {
-    this.sendResponse(response, 401, "unauthorized", data, 401);
+  sendUnauthorized(response: Response, data?: any, statusMessage = "unauthorized") {
+    this.sendResponse(response, 401, statusMessage, data, 401);
   },
 
-  sendNotFound(response: Response, data?: any) {
-    this.sendResponse(response, 404, "not found", data, 404);
+  sendNotFound(response: Response, data?: any, statusMessage = "not found") {
+    this.sendResponse(response, 404, statusMessage, data, 404);
   },
 
-  sendInternalError(response: Response, data?: any) {
-    this.sendResponse(response, 500, "internal error", data, 500);
+  sendInternalError(response: Response, statusMessage = "internal error") {
+    this.sendResponse(response, 500, statusMessage, 500);
   },
 
-  sendBadGateway(response: Response, data?: any) {
-    this.sendResponse(response, 502, "bad gateway", data, 502);
+  sendBadGateway(response: Response, data?: any, statusMessage = "bad gateway") {
+    this.sendResponse(response, 502, statusMessage, data, 502);
   },
 
-  sendServiceUnavailable(response: Response, data?: any) {
-    this.sendResponse(response, 503, "service unavailable", data, 503);
+  sendServiceUnavailable(response: Response, data?: any, statusMessage = "service unavailable") {
+    this.sendResponse(response, 503, statusMessage, data, 503);
   },
 };

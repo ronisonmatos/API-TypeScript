@@ -1,31 +1,30 @@
 import "reflect-metadata"
 import * as express from "express"
-import { myDataSource } from "./configs/app-data-source"
+import {myDataSource} from "./configs/app-data-source"
 import routes from "./routes"
 import * as cors from "cors"
-import * as dotenv from "dotenv"
-import { Request, Response } from "express";
-import {errorHandler} from "./middlewares/error.middleware";
-import {userRouter} from "./routes/UserRoutes";
-import deviceRoutes from "./routes/DeviceRoutes";
+import {Request, Response} from "express";
+import errorHandler from "./helpers/errorHandler";
 import logger from "./configs/logger";
+import MyResponse from "./functions/MyResponse"
 
 const app = express();
 app.use(express.json());
 app.use(errorHandler);
-const {PORT} = process.env;
-app.use("/auth", userRouter);
+const {PORT, DB_HOST} = process.env;
 app.use("/api", routes);
+app.use(cors());
 
-app.get("*",(req: Request, res: Response) => {
-    res.status(505).json({message: "Bad Request"});
+app.get("*", (req: Request, res: Response) => {
+    MyResponse.sendBadGateway(res);
 });
 
 myDataSource.initialize()
     .then(
         async () => {
             app.listen(PORT, () => {
-            logger.info(`===== Server is running on http://localhost:${PORT} =====`);
-        });
+                logger.info(`===== Server is running on http://${DB_HOST}:${PORT} =====`);
+            });
             logger.info("Data Source has been initialized!");
-    }).catch((error) => logger.error(error));
+        }
+    ).catch((error) => logger.error(error));
