@@ -3,7 +3,7 @@ import  * as dotenv  from "dotenv";
 
 dotenv.config();
 
-const {DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME, NODE_ENV} = process.env;
+const {DB_HOST, DB_PORT, DB_USER, DB_PASS, DB_NAME, ENABLE_LOGGING_TYPEORM} = process.env;
 
 export const myDataSource = new DataSource({
     type: "postgres",
@@ -13,6 +13,6 @@ export const myDataSource = new DataSource({
     password: DB_PASS,
     database: DB_NAME,
     entities: ["src/entity/*.ts"],
-    logging: NODE_ENV === "dev",
+    logging: ENABLE_LOGGING_TYPEORM === "dev",
     synchronize: true,
 });

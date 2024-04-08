@@ -1,34 +1,48 @@
 import express = require("express");
-import {UserController} from "../controllers/user.controller";
-import {authorization} from "../middlewares/authorization";
+import {UserController} from "../controllers/UserController";
+import {authorization} from "../helpers/authorization";
 import {authentification} from "../middlewares/auth.middleware";
-import { AuthController } from "../controllers/auth.controller";
-const Router = express.Router();
+import {Roles} from "../helpers/roles";
 
-Router.get(
-    "/users",
+const router = express.Router();
+
+router.get(
+    "/list",
     authentification,
-    authorization(["user","admin"]),
+    authorization([Roles.User, Roles.Admin]),
     UserController.getUsers
 );
-Router.get(
-    "/profile",
+
+router.get(
+    "/:id",
     authentification,
-    authorization(["user", "admin"]),
-    AuthController.getProfile
+    authorization([Roles.User, Roles.Admin]),
+    UserController.getUserById
 );
-Router.post("/signup", UserController.signup);
-Router.post("/login", AuthController.login);
-Router.put(
+
+router.post(
+    "/create",
+    UserController.insertUser
+);
+
+router.put(
     "/update/:id",
     authentification,
-    authorization(["user", "admin"]),
-    UserController.updateUser
+    authorization([Roles.User, Roles.Admin]),
+    UserController.updateUserById
 );
-Router.delete(
+
+router.delete(
+    "/disable/:id",
+    authentification,
+    authorization([Roles.User, Roles.Admin]),
+    UserController.desableUserById
+);
+
+router.delete(
     "/delete/:id",
     authentification,
-    authorization(["admin"]),
+    authorization([Roles.Admin]),
     UserController.deleteUser
 );
-export { Router as userRouter };
+export default router;

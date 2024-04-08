@@ -1,12 +1,14 @@
 import express = require("express");
 import CityRoutes from "./routes/CityRoutes";
-import {userRouter} from "./routes/UserRoutes";
+import UserRouter from "./routes/UserRoutes";
 import DeviceRoutes from "./routes/DeviceRoutes";
+import AuthRouters from "./routes/AuthRouters";
 
 const routes = express.Router();
 
-routes.use(userRouter);
+routes.use("/user", UserRouter);
 routes.use(CityRoutes);
-routes.use(DeviceRoutes);
+routes.use("/device", DeviceRoutes);
+routes.use(AuthRouters);
 
 export default routes;

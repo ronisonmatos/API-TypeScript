@@ -9,17 +9,21 @@ class UserService {
         return await this.repository.find();
     }
 
-    async getUserById(id: string){
+    async getUserById(id: string) {
         return await this.repository.findOne({where: {id: id}})
     }
 
-    async insertUser(userData: any){
+    async getUserByEmail(email: string) {
+        return await this.repository.findOne({where: {email}})
+    }
+
+    async insertUser(userData: any) {
         return await this.repository.save(userData);
     }
 
     async updateUserById(id: string, updatedUserData: any) {
         const user = await this.repository.findOne({where: {id: id}});
-        if(!user){
+        if (!user) {
             logger.info("Usuário não encontrado");
             throw new Error("Usuário não encontrado");
         }
@@ -27,9 +31,9 @@ class UserService {
         return await this.repository.save(updatedUser);
     }
 
-    async  desableUserById(id: string){
-        const user = await this.repository.findOneBy( {id});
-        if(!user){
+    async desableUserById(id: string) {
+        const user = await this.repository.findOne({where: {id: id}});
+        if (!user) {
             logger.info("Usuário não encontrado");
             throw new Error("Usuário não encontrado");
         }
